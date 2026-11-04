@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#faf7f2">
+<meta name="color-scheme" content="light only">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Álbum">
+<title>Álbum do Casamento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* Paleta e fonte: edite aqui */
+:root{--bg:#faf7f2;--ink:#2b2a28;--mut:#6b665e;--p:#4f6b52;--s:#9c5564;--line:#e6dfd3;--r:14px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+main{max-width:960px;margin:0 auto;padding:20px 16px 48px}
+h1,h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;line-height:1.1;margin:.2em 0}
+h1{font-size:clamp(2.4rem,9vw,3.8rem)}
+a{color:var(--s)}.muted{color:var(--mut)}.center{text-align:center}
+:focus-visible{outline:3px solid var(--s);outline-offset:3px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.vh:focus-visible+label{outline:3px solid var(--s);outline-offset:3px}
+.hero{text-align:center;padding:48px 0 28px}.hero p{margin:.3em 0;color:var(--mut)}
+.btn{display:inline-block;border:0;border-radius:999px;background:var(--p);color:#fff;padding:14px 26px;font:600 1rem system-ui,sans-serif;cursor:pointer;text-align:center;transition:transform .15s,box-shadow .15s}
+.btn:hover{box-shadow:0 6px 18px #4f6b5244}.btn:active{transform:scale(.97)}
+.btn.big{display:block;padding:30px;font-size:1.35rem;margin:12px 0}
+.btn.ghost{background:transparent;color:var(--p);border:1.5px solid var(--p)}
+.btn.sm{padding:8px 14px;font-size:.9rem}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;max-width:420px;margin:60px auto}
+input[type=text],input[type=password]{width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font:inherit;margin:6px 0 16px}
+#queue{list-style:none;padding:0}#queue li{display:grid;grid-template-columns:1fr 90px;gap:4px 10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.9rem}
+#queue progress{width:100%;height:8px;accent-color:var(--p)}#queue em{grid-column:1/3;font-style:normal;color:var(--mut)}#queue .err em{color:#b3261e}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;margin-left:4px;cursor:pointer;font:inherit}
+.tabs [aria-selected=true]{background:var(--p);color:#fff;border-color:var(--p)}
+.masonry{column-width:160px;column-gap:10px}
+.masonry figure,.mcard{margin:0 0 10px;break-inside:avoid;position:relative;border-radius:10px;overflow:hidden;background:#eee}
+.masonry img,.masonry video{width:100%;display:block}.masonry img{cursor:zoom-in}
+.masonry figure[data-wm]::after{content:attr(data-wm);position:absolute;right:8px;bottom:6px;color:#fffe;font:600 .85rem "Cormorant Garamond",serif;text-shadow:0 1px 3px #0009;pointer-events:none}
+.mcard label{position:absolute;top:6px;left:6px;background:#fffe;border-radius:6px;padding:2px 6px;z-index:1}
+.mcard small{display:block;padding:4px 8px;background:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin:16px 0}
+.stats div{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px;text-align:center}.stats b{display:block;font-size:1.6rem}
+.hours{display:flex;align-items:flex-end;gap:2px;height:70px}.hours i{flex:1;background:var(--p);min-height:2px;border-radius:2px 2px 0 0}
+.lb{position:fixed;inset:0;background:#000e;display:flex;align-items:center;justify-content:center;z-index:50}
+.lb img{max-width:100%;max-height:100%}.lb button{position:absolute;background:#fff3;color:#fff;border:0;font-size:2rem;width:48px;height:48px;border-radius:50%;cursor:pointer}
+.lb .x{top:max(12px,env(safe-area-inset-top));right:12px}.lb .l{left:8px}.lb .r{right:8px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;opacity:0;transition:.25s;pointer-events:none;z-index:60;max-width:90vw;text-align:center}#toast.show{opacity:1;transform:translate(-50%,0)}
+.confetti i{position:fixed;top:-10px;width:8px;height:12px;opacity:.9;animation:fall 2s ease-in forwards;z-index:70}
+@keyframes fall{to{transform:translate(var(--x),100vh) rotate(540deg);opacity:0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.confetti{display:none}}
+</style>
+</head>
+<body>
+<main id="app" tabindex="-1"><p class="center muted">Carregando…</p></main>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tus-js-client@4.1.0/dist/tus.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+const CONFIG = { SUPABASE_URL: 'https://rpiazkfpmrjmiyuyfhyu.supabase.co', SUPABASE_ANON_KEY: 'sb_publishable_xQvCkjhXGzW6uAJersyFpQ_iqq5DO1Y' };
+
+/* ---------- validação (client; o servidor revalida via RLS + bucket) ---------- */
+const MB = 1048576, MAX_FILES = 20, MAX_PHOTO = 20 * MB, MAX_VIDEO = 200 * MB;
+const PHOTO = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'], VIDEO = ['video/mp4', 'video/quicktime', 'video/webm'];
+const EXT = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', heic: 'image/heic', heif: 'image/heif', mp4: 'video/mp4', mov: 'video/quicktime', webm: 'video/webm' };
+const MSG = { vazio: 'Arquivo vazio', tipo: 'Formato não suportado', foto_grande: 'Foto acima de 20 MB', video_grande: 'Vídeo acima de 200 MB', muitos: 'Escolha até 20 arquivos por vez', nenhum: 'Nenhum arquivo selecionado' };
+const mimeOf = f => (f.type || EXT[(f.name || '').split('.').pop().toLowerCase()] || '').toLowerCase();
+function validateFile(f) {
+  if (!f.size) return { ok: false, reason: 'vazio' };
+  const mime = mimeOf(f), kind = PHOTO.includes(mime) ? 'photo' : VIDEO.includes(mime) ? 'video' : null;
+  if (!kind) return { ok: false, reason: 'tipo' };
+  if (kind === 'photo' && f.size > MAX_PHOTO) return { ok: false, reason: 'foto_grande' };
+  if (kind === 'video' && f.size > MAX_VIDEO) return { ok: false, reason: 'video_grande' };
+  return { ok: true, kind, mime };
+}
+function validateBatch(fs) {
+  if (!fs.length) return { ok: false, reason: 'nenhum' };
+  if (fs.length > MAX_FILES) return { ok: false, reason: 'muitos' };
+  return { ok: true };
+}
+window.AlbumValidate = { validateFile, validateBatch };
+
+/* ---------- base ---------- */
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const sb = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+const app = $('#app'), sleep = ms => new Promise(r => setTimeout(r, ms));
+let event = null;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 3500); }
+function showError(m) { app.innerHTML = `<section class="card center" role="alert"><h1>Ops</h1><p>${esc(m)}</p><button class="btn" onclick="location.reload()">Tentar de novo</button></section>`; app.focus(); }
+async function ensureSession() {
+  let { data } = await sb.auth.getSession();
+  if (!data.session) { const r = await sb.auth.signInAnonymously(); if (r.error) throw r.error; data = r.data; }
+  return data.session;
+}
+async function loadEvent() {
+  if (event) return event;
+  await ensureSession();
+  const { data } = await sb.from('events').select('*').limit(1).maybeSingle();
+  return (event = data);
+}
+function needEntry() {
+  const t = localStorage.getItem('albumToken');
+  if (t) location.hash = '#/e/' + t; else showError('Link inválido ou expirado. Escaneie o QR code do evento.');
+}
+async function signed(paths) {
+  const out = {};
+  for (let i = 0; i < paths.length; i += 100) {
+    const { data } = await sb.storage.from('media').createSignedUrls(paths.slice(i, i + 100), 3600);
+    (data || []).forEach(d => { if (d.signedUrl) out[d.path] = d.signedUrl; });
+  }
+  return out;
+}
+const fmtDate = d => d ? new Date(d + 'T00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+
+/* ---------- entrada /e/TOKEN ---------- */
+async function join(token, name) {
+  await ensureSession();
+  const { error } = await sb.rpc('join_event', { p_token: token, p_name: name });
+  if (error) return showError('Este link não é válido. Peça o QR code atualizado aos noivos.');
+  localStorage.setItem('guestName', name); localStorage.setItem('albumToken', token);
+  event = null; location.hash = '#/home';
+}
+async function viewEntry(token) {
+  const saved = localStorage.getItem('guestName');
+  if (saved) return join(token, saved);
+  app.innerHTML = `<section class="card center"><h1>Bem-vindo(a)!</h1><p>Como podemos chamar você?</p><label for="name-input">Seu nome</label><input id="name-input" type="text" autocomplete="name" maxlength="80"><button id="enter-btn" class="btn">Entrar no álbum</button></section>`;
+  const go = () => { const n = $('#name-input').value.trim(); if (!n) return toast('Digite seu nome para continuar.'); join(token, n); };
+  $('#enter-btn').onclick = go; $('#name-input').onkeydown = e => e.key === 'Enter' && go(); $('#name-input').focus();
+}
+
+/* ---------- home + upload ---------- */
+async function compress(f) {
+  if (!f.type.startsWith('image/') || f.type === 'image/gif') return f;
+  try {
+    const b = await createImageBitmap(f, { imageOrientation: 'from-image' });
+    const k = Math.min(1, 2048 / Math.max(b.width, b.height)), w = Math.round(b.width * k), h = Math.round(b.height * k);
+    const c = document.createElement('canvas'); c.width = w; c.height = h; c.getContext('2d').drawImage(b, 0, 0, w, h); b.close();
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .8));
+    if (!blob || (k === 1 && blob.size >= f.size)) return f;
+    return new File([blob], f.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' });
+  } catch { return f; }
+}
+async function uploadOne(f, v, onP) {
+  const body = v.kind === 'photo' ? await compress(f) : f;
+  const { data: { session } } = await sb.auth.getSession();
+  const path = `${event.id}/${session.user.id}/${crypto.randomUUID()}.${(body.name.split('.').pop() || 'bin').toLowerCase()}`;
+  await new Promise((res, rej) => {
+    const u = new tus.Upload(body, {
+      endpoint: `${CONFIG.SUPABASE_URL}/storage/v1/upload/resumable`,
+      retryDelays: [0, 1000, 3000, 5000, 10000],
+      headers: { authorization: `Bearer ${session.access_token}`, 'x-upsert': 'false' },
+      uploadDataDuringCreation: true, removeFingerprintOnSuccess: true, chunkSize: 6 * MB,
+      metadata: { bucketName: 'media', objectName: path, contentType: body.type || v.mime, cacheControl: '3600' },
+      onError: rej, onProgress: (a, t) => onP(Math.round(a / t * 100)), onSuccess: res
+    });
+    u.findPreviousUploads().then(p => { if (p.length) u.resumeFromPreviousUpload(p[0]); u.start(); });
+  });
+  for (let a = 1; a <= 3; a++) {
+    const { error } = await sb.from('media').insert({ event_id: event.id, guest_id: session.user.id, guest_name: localStorage.getItem('guestName'), kind: v.kind, size_bytes: body.size, storage_path: path });
+    if (!error) return;
+    await sleep(1000 * a);
+  }
+  throw new Error('registro');
+}
+function confetti() {
+  const c = document.createElement('div'); c.className = 'confetti'; c.setAttribute('aria-hidden', 'true');
+  for (let i = 0; i < 28; i++) { const s = document.createElement('i'); s.style.cssText = `left:${Math.random() * 100}%;background:${['var(--p)', 'var(--s)', '#e8d9b5'][i % 3]};animation-delay:${Math.random() * .4}s;--x:${(Math.random() - .5) * 120}px`; c.append(s); }
+  document.body.append(c); setTimeout(() => c.remove(), 2600);
+}
+async function handleFiles(files) {
+  files = [...files];
+  const b = validateBatch(files); if (!b.ok) return toast(MSG[b.reason]);
+  const q = $('#queue'); let ok = 0, i = 0;
+  const jobs = files.map(f => { const li = document.createElement('li'); li.innerHTML = `<span>${esc(f.name)}</span><progress max="100" value="0" aria-label="Progresso de ${esc(f.name)}"></progress><em>Na fila</em>`; q.append(li); return { f, li }; });
+  const worker = async () => {
+    while (i < jobs.length) {
+      const { f, li } = jobs[i++], st = $('em', li), pr = $('progress', li), v = validateFile(f);
+      if (!v.ok) { st.textContent = MSG[v.reason]; li.classList.add('err'); continue; }
+      st.textContent = 'Enviando…';
+      try { await uploadOne(f, v, p => pr.value = p); pr.value = 100; st.textContent = 'Enviado ✓'; ok++; }
+      catch { st.textContent = 'Falhou. Escolha o arquivo de novo para reenviar.'; li.classList.add('err'); }
+    }
+  };
+  await Promise.all([worker(), worker(), worker()]);
+  if (ok) { confetti(); toast(`${ok} enviado${ok > 1 ? 's' : ''}. Obrigado!`); const c = $('#count'); if (c) c.textContent = +c.textContent + ok; }
+}
+async function viewHome() {
+  if (!await loadEvent()) return needEntry();
+  const { data: n } = await sb.rpc('my_upload_count');
+  app.innerHTML = `<header class="hero"><h1>${esc(event.couple_names)}</h1><p>${esc(fmtDate(event.event_date))}</p><p>${esc(event.venue || '')}</p><p>Compartilhe com a gente os melhores momentos da festa.</p></header>
+<input id="file-input" class="vh" type="file" accept="image/*,video/*" multiple><label class="btn big" for="file-input">Enviar foto ou vídeo</label>
+<input id="cam-input" class="vh" type="file" accept="image/*,video/*" capture="environment"><label class="btn ghost" for="cam-input" style="display:block">Abrir a câmera agora</label>
+<ul id="queue" aria-live="polite"></ul>
+<p class="center muted">Você enviou <strong id="count">${n || 0}</strong> até agora. <a href="#/mural">Ver o mural</a></p>`;
+  for (const id of ['#file-input', '#cam-input']) $(id).onchange = e => { handleFiles(e.target.files); e.target.value = ''; };
+}
+
+/* ---------- mural ---------- */
+function lightbox(list, i) {
+  const prev = document.activeElement, o = document.createElement('div');
+  o.className = 'lb'; o.setAttribute('role', 'dialog'); o.setAttribute('aria-modal', 'true'); o.setAttribute('aria-label', 'Foto ampliada');
+  o.innerHTML = '<button class="x" aria-label="Fechar">✕</button><button class="l" aria-label="Foto anterior">‹</button><img alt=""><button class="r" aria-label="Próxima foto">›</button>';
+  const img = $('img', o), go = d => { i = (i + d + list.length) % list.length; img.src = list[i]; };
+  const key = e => { if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') go(-1); if (e.key === 'ArrowRight') go(1); };
+  const close = () => { o.remove(); removeEventListener('keydown', key); prev && prev.focus(); };
+  let x0 = 0;
+  o.addEventListener('touchstart', e => x0 = e.touches[0].clientX, { passive: true });
+  o.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1); });
+  $('.x', o).onclick = close; $('.l', o).onclick = () => go(-1); $('.r', o).onclick = () => go(1);
+  addEventListener('keydown', key); document.body.append(o); go(0); $('.x', o).focus();
+}
+async function viewMural() {
+  if (!await loadEvent()) return needEntry();
+  app.innerHTML = `<nav class="bar"><a href="#/home">Enviar mais</a><div class="tabs" role="tablist" aria-label="Filtrar mural">${[['all', 'Todas'], ['photo', 'Fotos'], ['video', 'Vídeos']].map(([k, l]) => `<button role="tab" data-f="${k}" aria-selected="${k === 'all'}">${l}</button>`).join('')}</div></nav>
+<div id="grid" class="masonry" aria-busy="true"></div><p id="empty" class="muted center" hidden>Ainda não há fotos ou vídeos aprovados. Volte em breve!</p><p class="center"><button id="more" class="btn ghost" hidden>Ver mais</button></p>`;
+  const PAGE = 40; let items = [], urls = {}, filter = 'all', offset = 0;
+  const draw = () => {
+    const list = items.filter(i => urls[i.storage_path] && (filter === 'all' || i.kind === filter)), photos = list.filter(i => i.kind === 'photo');
+    $('#grid').innerHTML = list.map(i => i.kind === 'photo'
+      ? `<figure data-wm="${esc(event.initials)}"><img loading="lazy" src="${urls[i.storage_path]}" alt="Foto de ${esc(i.guest_name)}" data-id="${i.id}"></figure>`
+      : `<figure><video controls playsinline preload="none" src="${urls[i.storage_path]}" aria-label="Vídeo de ${esc(i.guest_name)}"></video></figure>`).join('');
+    $('#empty').hidden = list.length > 0; $('#grid').setAttribute('aria-busy', 'false');
+    $$('#grid img').forEach(im => im.onclick = () => lightbox(photos.map(p => urls[p.storage_path]), photos.findIndex(p => p.id === im.dataset.id)));
+  };
+  const load = async () => {
+    const { data, error } = await sb.from('media').select('id,kind,storage_path,guest_name').eq('status', 'approved').order('created_at', { ascending: false }).range(offset, offset + PAGE - 1);
+    if (error) return toast('Não foi possível carregar o mural. Tente de novo.');
+    Object.assign(urls, await signed(data.map(d => d.storage_path)));
+    items = items.concat(data); offset += data.length; $('#more').hidden = data.length < PAGE; draw();
+  };
+  $$('.tabs button').forEach(b => b.onclick = () => { filter = b.dataset.f; $$('.tabs button').forEach(x => x.setAttribute('aria-selected', x === b)); draw(); });
+  $('#more').onclick = load; await load();
+}
+
+/* ---------- admin ---------- */
+let AF = 'pending';
+async function viewAdmin() {
+  await ensureSession();
+  const { data: isAdm } = await sb.rpc('is_admin');
+  if (!isAdm) {
+    app.innerHTML = `<section class="card"><h1>Área dos noivos</h1><label for="admin-pass">Senha</label><input id="admin-pass" type="password" autocomplete="current-password"><button id="admin-login" class="btn">Entrar</button></section>`;
+    $('#admin-login').onclick = async () => { const { error } = await sb.rpc('admin_login', { p_password: $('#admin-pass').value }); if (error) return toast('Senha incorreta.'); route(); };
+    return;
+  }
+  const [{ data: ev }, { data: rows }] = await Promise.all([sb.from('events').select('*').limit(1).single(), sb.from('media').select('*').order('created_at', { ascending: false }).limit(2000)]);
+  event = ev;
+  const by = s => rows.filter(r => r.status === s).length, guests = {}, hrs = Array(24).fill(0);
+  rows.forEach(r => { guests[r.guest_name] = (guests[r.guest_name] || 0) + 1; hrs[new Date(r.created_at).getHours()]++; });
+  const mx = Math.max(1, ...hrs), shown = rows.filter(r => r.status === AF).slice(0, 120), u = await signed(shown.map(r => r.storage_path));
+  app.innerHTML = `<h1 style="font-size:2.2rem">Moderação</h1>
+<div class="stats"><div><b>${rows.length}</b>Total</div><div><b>${by('pending')}</b>Pendentes</div><div><b>${by('approved')}</b>Aprovadas</div><div><b>${by('rejected')}</b>Reprovadas</div></div>
+<details><summary>Envios por convidado e por hora</summary><p>${Object.entries(guests).sort((a, b) => b[1] - a[1]).map(([n, c]) => `${esc(n)}: ${c}`).join('; ')}</p><div class="hours" role="img" aria-label="Envios por hora do dia">${hrs.map((v, h) => `<i title="${h}h: ${v}" style="height:${v / mx * 100}%"></i>`).join('')}</div></details>
+<div class="bar" style="margin-top:16px"><div class="tabs" role="tablist" aria-label="Status">${[['pending', 'Pendentes'], ['approved', 'Aprovadas'], ['rejected', 'Reprovadas']].map(([k, l]) => `<button role="tab" data-f="${k}" aria-selected="${k === AF}">${l}</button>`).join('')}</div>
+<div><button class="btn sm ghost" id="all">Marcar todas</button> <button class="btn sm" data-a="approve">Aprovar</button> <button class="btn sm ghost" data-a="reject">Reprovar</button> <button class="btn sm ghost" data-a="fav">Favoritar</button> <button class="btn sm ghost" data-a="delete">Excluir</button> <button class="btn sm" id="zip">Baixar ZIP</button></div></div>
+<div class="masonry">${shown.map(r => `<div class="mcard"><label><input type="checkbox" class="sel" value="${r.id}" aria-label="Selecionar mídia de ${esc(r.guest_name)}"></label>${r.kind === 'photo' ? `<img src="${u[r.storage_path]}" alt="Foto de ${esc(r.guest_name)}" loading="lazy">` : `<video src="${u[r.storage_path]}" controls preload="none"></video>`}<small>${r.favorite ? 'Favorita: ' : ''}${esc(r.guest_name)}</small></div>`).join('') || '<p class="muted">Nada por aqui.</p>'}</div>
+<section class="center" style="margin-top:32px"><h2>QR code do evento</h2><div id="qr" style="display:inline-block;padding:12px;background:#fff"></div><p><a id="qr-dl" class="btn sm" download="qr-casamento.png" href="#/admin">Baixar PNG</a></p></section>`;
+  const sel = () => $$('.sel:checked').map(x => x.value);
+  $$('.tabs button').forEach(b => b.onclick = () => { AF = b.dataset.f; viewAdmin(); });
+  $('#all').onclick = () => { const on = $$('.sel').some(x => !x.checked); $$('.sel').forEach(x => x.checked = on); };
+  $$('[data-a]').forEach(b => b.onclick = async () => {
+    const ids = sel(), a = b.dataset.a; if (!ids.length) return toast('Selecione ao menos uma mídia.');
+    let r;
+    if (a === 'delete') {
+      if (!confirm(`Excluir ${ids.length} mídia(s) para sempre?`)) return;
+      await sb.storage.from('media').remove(rows.filter(x => ids.includes(x.id)).map(x => x.storage_path));
+      r = await sb.from('media').delete().in('id', ids);
+    } else r = await sb.from('media').update({ approve: { status: 'approved' }, reject: { status: 'rejected' }, fav: { favorite: true } }[a]).in('id', ids);
+    if (r.error) return toast('Não foi possível concluir a ação.');
+    viewAdmin();
+  });
+  $('#zip').onclick = async e => {
+    const b = e.currentTarget, ids = sel(), list = ids.length ? rows.filter(r => ids.includes(r.id)) : rows;
+    if (!list.length) return toast('Não há mídias para baixar.');
+    const urls = await signed(list.map(r => r.storage_path)), zip = new JSZip(); let n = 0;
+    for (const r of list) {
+      try { zip.file(`${r.guest_name.replace(/[^\w\- ]/g, '_')}/${r.created_at.slice(0, 19).replace(/[:T]/g, '-')}-${r.id.slice(0, 6)}.${r.storage_path.split('.').pop()}`, await (await fetch(urls[r.storage_path])).blob()); } catch { }
+      b.textContent = `Baixando ${++n}/${list.length}…`;
+    }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(await zip.generateAsync({ type: 'blob', compression: 'STORE' })); a.download = 'album-casamento.zip'; a.click(); b.textContent = 'Baixar ZIP';
+  };
+  new QRCode($('#qr'), { text: location.origin + location.pathname + '#/e/' + event.token, width: 256, height: 256, correctLevel: QRCode.CorrectLevel.H });
+  $('#qr-dl').onclick = e => { e.currentTarget.href = $('#qr canvas').toDataURL('image/png'); };
+}
+
+/* ---------- rotas e PWA ---------- */
+async function route() {
+  const h = location.hash.replace(/^#\/?/, '').split('/');
+  try {
+    if (h[0] === 'e' && h[1]) await viewEntry(decodeURIComponent(h[1]));
+    else if (h[0] === 'home') await viewHome();
+    else if (h[0] === 'mural') await viewMural();
+    else if (h[0] === 'admin') await viewAdmin();
+    else needEntry();
+  } catch (e) { console.error(e); showError('Algo deu errado. Verifique sua conexão e tente de novo.'); }
+}
+addEventListener('hashchange', route); route();
+(() => {
+  const m = { name: 'Álbum do Casamento', short_name: 'Álbum', start_url: location.href.split('#')[0] + '#/home', display: 'standalone', background_color: '#faf7f2', theme_color: '#faf7f2', icons: [{ src: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#4f6b52"/><text x="50" y="68" font-size="54" text-anchor="middle" fill="#fff">♥</text></svg>'), sizes: 'any', type: 'image/svg+xml' }] };
+  const l = document.createElement('link'); l.rel = 'manifest'; l.href = URL.createObjectURL(new Blob([JSON.stringify(m)], { type: 'application/manifest+json' })); document.head.append(l);
+})();
+</script>
+</body>
+</html>
