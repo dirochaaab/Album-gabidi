@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="Álbum">
 <title>Álbum do Casamento</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Great+Vibes&display=swap" rel="stylesheet">
 <style>
 /* Paleta e fonte: edite aqui */
 :root{--bg:#faf7f2;--ink:#2b2a28;--mut:#6b665e;--p:#4f6b52;--s:#9c5564;--line:#e6dfd3;--r:14px}
@@ -51,6 +51,57 @@ input[type=text],input[type=password]{width:100%;padding:12px;border:1.5px solid
 .confetti i{position:fixed;top:-10px;width:8px;height:12px;opacity:.9;animation:fall 2s ease-in forwards;z-index:70}
 @keyframes fall{to{transform:translate(var(--x),100vh) rotate(540deg);opacity:0}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.confetti{display:none}}
+
+/* tema preto e dourado da área admin */
+main{position:relative}
+body.adm{--bg:#0b0907;--ink:#f1e6cf;--mut:#b9a98a;--p:#d9b56a;--line:#6b5326;font-family:"Cormorant Garamond",Georgia,serif;font-size:1.12rem;background:radial-gradient(ellipse at 88% 10%,#5a3f14aa,transparent 42%),radial-gradient(ellipse at 95% 55%,#4a3512aa,transparent 38%),radial-gradient(ellipse at 5% 95%,#2e220e99,transparent 50%),#0b0907}
+.adm main{z-index:1}
+.adm .topbar{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.adm .mono{font:500 2.4rem/1 "Cormorant Garamond",serif;display:flex;align-items:center;gap:8px}
+.adm .mono i{width:1px;height:2.6rem;background:var(--p)}
+.adm .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--p),transparent 95%)}
+.adm .tag{letter-spacing:.3em;font-size:.8rem;color:var(--p);text-transform:uppercase}
+.adm h1{font-size:clamp(2.8rem,12vw,4.4rem);margin:.1em 0 0}
+.adm .script{font:400 clamp(2rem,8vw,3rem)/1 "Great Vibes",cursive;color:var(--p);margin:0 0 20px;display:flex;align-items:center;gap:10px}
+.adm .script.big{margin:40px 0 8px;justify-content:center}
+.adm .stats{grid-template-columns:repeat(3,1fr);gap:14px}
+.adm .stats div{position:relative;background:linear-gradient(150deg,#ffffff1c,#ffffff06);border:1.5px solid #c9a24d99;border-radius:22px;padding:18px 8px 16px;backdrop-filter:blur(6px);box-shadow:inset 0 1px 0 #ffffff26,0 8px 24px #0008}
+.adm .stats b{font:500 3rem/1 "Cormorant Garamond",serif}
+.adm .stats svg{position:absolute;right:10px;bottom:10px;color:var(--p)}
+.adm summary{display:flex;align-items:center;gap:12px;list-style:none;cursor:pointer;font-size:1.5rem;margin:20px 0}
+.adm summary::-webkit-details-marker{display:none}
+.adm summary::before{content:"";border-left:14px solid var(--p);border-top:8px solid transparent;border-bottom:8px solid transparent}
+.adm summary::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--p),transparent)}
+.adm .btn{display:inline-flex;align-items:center;gap:10px;font:600 1.15rem "Cormorant Garamond",serif;padding:12px 26px;background:linear-gradient(180deg,#f3d891,#c79a45);color:#1a1206;box-shadow:0 4px 18px #c79a4533}
+.adm .btn.ghost,.adm .tabs button{background:transparent;color:var(--ink);border:1.5px solid #c9a24dcc;box-shadow:none}
+.adm .tabs{display:flex;flex-wrap:wrap;gap:12px}
+.adm .tabs button{margin:0;padding:12px 30px;font:600 1.15rem "Cormorant Garamond",serif;border-radius:999px}
+.adm .tabs [aria-selected=true]{background:linear-gradient(180deg,#f3d891,#c79a45);color:#1a1206;border-color:transparent}
+.adm .bar{display:block}.adm .bar>div+div{margin-top:14px;display:flex;flex-wrap:wrap;gap:12px}
+.adm .mcard{border:1.5px solid #c9a24d;border-radius:22px;background:#17120b}
+.adm .mcard small,.adm .mcard p{background:#17120b!important;color:var(--ink)}
+.adm .card{background:#14100add;border-color:#6b5326}
+.adm input[type=password]{background:#0d0a06;color:var(--ink);border-color:#6b5326}
+.adm .deco{position:absolute;pointer-events:none;z-index:-1}
+.adm .rings{top:150px;right:-6px;width:190px}
+.adm .flowers{bottom:-10px;right:-10px;width:170px;opacity:.9}
+
+/* ajuste de proporções do tema admin + foto de fundo opcional (fundo-admin.jpg) */
+.adm main{overflow:hidden}
+.adm .mono{font-size:2rem}.adm .mono i{height:2.2rem}
+.adm .tag{font-size:.7rem;letter-spacing:.25em}
+.adm h1{font-size:2.5rem;font-weight:500}
+.adm .script{font-size:2.1rem}
+.adm .rings{top:62px;right:28px;width:150px}
+.adm .stats{gap:12px}.adm .stats div{padding:14px 6px 12px;border-radius:20px;font-size:.95rem}
+.adm .stats b{font-size:2.1rem}
+.adm .stats svg{width:22px;height:22px;right:8px;bottom:8px}
+.adm summary{font-size:1.15rem}
+.adm .btn,.adm .btn.sm{font-size:.95rem;padding:8px 18px;gap:8px}
+.adm .btn svg{width:18px;height:18px}
+.adm .tabs button{font-size:.95rem;padding:8px 22px}
+.adm.foto::before{content:"";position:fixed;inset:0;background:url(fundo-admin.jpg) center top/cover no-repeat;z-index:-1}
+.adm.foto .deco{display:none}
 </style>
 </head>
 <body>
@@ -220,6 +271,22 @@ async function viewMural() {
 }
 
 /* ---------- admin ---------- */
+const ICONS = {
+  image: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4 18l5-5 4 4 3-3 4 4"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  ok: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/>',
+  chat: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01"/>',
+  cloud: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.6 1.5A3.5 3.5 0 0117 18"/><path d="M12 12v7M9 14.5l3-3 3 3"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  star: '<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9 6.8 19.7l1-5.9L3.5 9.7l5.9-.8z"/>',
+  trash: '<path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13M10 11v5M14 11v5"/>'
+};
+const ic = (k, s = 22) => `<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg>`;
+const HEART = '<svg viewBox="0 0 28 24" width="34" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M14 22C6 16 3 11 3 8a5 5 0 0111-1 5 5 0 0111 1c0 3-3 8-11 14z"/></svg>';
+const HEARTS = '<svg viewBox="0 0 60 30" width="90" height="45" fill="none" stroke="#d9b56a" stroke-width="1.6" aria-hidden="true"><path d="M20 27C12 21 9 16 9 13a5 5 0 0111-1 5 5 0 0111 1c0 3-3 8-11 14z"/><path d="M38 27C30 21 27 16 27 13a5 5 0 0111-1 5 5 0 0111 1c0 3-3 8-11 14z"/></svg>';
+const RINGS = '<svg class="deco rings" viewBox="0 0 200 110" aria-hidden="true"><defs><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6dc9a"/><stop offset=".5" stop-color="#c9983e"/><stop offset="1" stop-color="#8a6322"/></linearGradient></defs><g fill="none" stroke="url(#gold)" stroke-width="9"><ellipse cx="68" cy="62" rx="52" ry="30" transform="rotate(-8 68 62)"/><ellipse cx="128" cy="48" rx="52" ry="30" transform="rotate(-8 128 48)"/></g></svg>';
+const flowers = () => `<svg class="deco flowers" viewBox="0 0 170 240" aria-hidden="true"><g stroke="#8b7a56" stroke-width="1.4" fill="none"><path d="M160 240C130 170 110 110 70 25"/><path d="M165 240C150 180 150 120 120 40"/><path d="M155 240C110 200 70 160 25 120"/></g>${Array.from({ length: 46 }, (_, k) => { const t = k / 46, b = k % 3; return `<circle cx="${(160 - t * 120 - b * 14 + Math.sin(k * 1.7) * 11).toFixed(1)}" cy="${(235 - t * 210 + Math.cos(k * 2.3) * 9).toFixed(1)}" r="${3 + k % 4}" fill="#f3ead7" opacity=".85"/>`; }).join('')}</svg>`;
 let AF = 'pending';
 async function viewAdmin() {
   const pass = sessionStorage.getItem('adm') || '';
@@ -235,14 +302,14 @@ async function viewAdmin() {
   const link = location.origin + location.pathname + '#/e/' + ev.token;
   const card = x => `<div class="mcard"><label><input type="checkbox" class="sel" value="${esc(x.id)}" aria-label="Selecionar item de ${esc(x.guest)}"></label>${x.kind === 'photo' ? `<img src="${dThumb(x.id)}" alt="Foto de ${esc(x.guest)}" loading="lazy">` : `<iframe src="${dVideo(x.id)}" loading="lazy" title="Vídeo de ${esc(x.guest)}" style="width:100%;aspect-ratio:3/4;border:0"></iframe>`}<small>${x.favorite === true ? 'Favorita: ' : ''}${esc(x.guest)}</small></div>`;
   const msgCard = m => `<div class="mcard"><label><input type="checkbox" class="sel" value="${esc(m.id)}" aria-label="Selecionar mensagem de ${esc(m.guest)}"></label><p style="padding:36px 12px 8px;margin:0;background:#fff">${esc(m.text)}</p><small>${esc(m.guest)} (${m.status === 'approved' ? 'visível' : 'oculta'})</small></div>`;
-  app.innerHTML = `<h1 style="font-size:2.2rem">Moderação</h1>
-<div class="stats"><div><b>${media.length}</b>Total</div><div><b>${by('pending')}</b>Pendentes</div><div><b>${by('approved')}</b>Aprovadas</div><div><b>${msgs.length}</b>Mensagens</div></div>
+  app.innerHTML = `${RINGS}${flowers()}<div class="topbar"><span class="mono">${esc((ev.initials || 'G&D').split('&')[0])}<i></i>${esc((ev.initials || 'G&D').split('&')[1] || '')}</span><span class="rule"></span><span class="tag">Nosso álbum</span></div><h1>Moderação</h1><p class="script">do nosso álbum ${HEART}</p>
+<div class="stats"><div><b>${media.length}</b>Total${ic('image', 34)}</div><div><b>${by('pending')}</b>Pendentes${ic('clock', 34)}</div><div><b>${by('approved')}</b>Aprovadas${ic('ok', 34)}</div><div><b>${msgs.length}</b>Mensagens${ic('chat', 34)}</div></div>
 <details><summary>Envios por convidado</summary><p>${Object.entries(guests).sort((a, b) => b[1] - a[1]).map(([n, c]) => `${esc(n)}: ${c}`).join('; ') || 'Nenhum envio ainda.'}</p></details>
-<p><a class="btn sm ghost" href="${esc(ev.folder)}" target="_blank" rel="noopener">Abrir a pasta no Drive</a></p>
+<p><a class="btn sm ghost" href="${esc(ev.folder)}" target="_blank" rel="noopener">${ic('cloud', 26)}Abrir a pasta no Drive</a></p>
 <div class="bar" style="margin-top:16px"><div class="tabs" role="tablist" aria-label="Filtro">${[['pending', 'Pendentes'], ['approved', 'Aprovadas'], ['rejected', 'Reprovadas'], ['msg', 'Mensagens']].map(([k, l]) => `<button role="tab" data-f="${k}" aria-selected="${k === AF}">${l}</button>`).join('')}</div>
-<div><button class="btn sm ghost" id="all">Marcar todas</button> <button class="btn sm" data-a="approve">Aprovar</button> <button class="btn sm ghost" data-a="reject">Reprovar</button> <button class="btn sm ghost" data-a="fav">Favoritar</button> <button class="btn sm ghost" data-a="delete">Excluir</button></div></div>
+<div><button class="btn sm ghost" id="all">${ic('check')}Marcar todas</button> <button class="btn sm" data-a="approve">${ic('check')}Aprovar</button> <button class="btn sm ghost" data-a="reject">${ic('x')}Reprovar</button> <button class="btn sm ghost" data-a="fav">${ic('star')}Favoritar</button> <button class="btn sm ghost" data-a="delete">${ic('trash')}Excluir</button></div></div>
 <div class="masonry">${(AF === 'msg' ? msgs.map(msgCard) : media.filter(x => x.status === AF).map(card)).join('') || '<p class="muted">Nada por aqui.</p>'}</div>
-<section class="center" style="margin-top:32px"><h2>QR code do evento</h2><div id="qr" style="display:inline-block;padding:12px;background:#fff"></div><p class="muted" style="word-break:break-all;font-size:.85rem">${esc(link)}</p><p><a id="qr-dl" class="btn sm" download="qr-casamento.png" href="#/admin">Baixar PNG</a></p></section>`;
+<section class="center" style="margin-top:32px"><h2>QR code do evento</h2><div id="qr" style="display:inline-block;padding:12px;background:#fff"></div><p class="muted" style="word-break:break-all;font-size:.85rem">${esc(link)}</p><p><a id="qr-dl" class="btn sm" download="qr-casamento.png" href="#/admin">Baixar PNG</a></p></section><p class="script big">Nosso grande dia</p><p class="center">${HEARTS}</p>`;
   $$('.tabs button').forEach(b => b.onclick = () => { AF = b.dataset.f; viewAdmin(); });
   $('#all').onclick = () => { const on = $$('.sel').some(x => !x.checked); $$('.sel').forEach(x => x.checked = on); };
   $$('[data-a]').forEach(b => b.onclick = async () => {
@@ -260,6 +327,8 @@ async function viewAdmin() {
 /* ---------- rotas e PWA ---------- */
 async function route() {
   const h = location.hash.replace(/^#\/?/, '').split('/');
+  document.body.classList.toggle('adm', h[0] === 'admin');
+  if (h[0] === 'admin' && !document.body.classList.contains('foto')) { const im = new Image(); im.onload = () => document.body.classList.add('foto'); im.src = 'fundo-admin.jpg'; }
   try {
     if (h[0] === 'e' && h[1]) await viewEntry(decodeURIComponent(h[1]));
     else if (h[0] === 'home') await viewHome();
