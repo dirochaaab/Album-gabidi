@@ -125,6 +125,16 @@ body.adm{background:#0b0907}
 .adm .btn .gi{width:20px;height:20px}
 .adm::after{background:linear-gradient(90deg,#0b0907dd,#0b090788 50%,#0b090700 85%)}
 
+
+/* tela de boas-vindas (arte fixa + campo e botão clicáveis) */
+.gd-entry{position:fixed;inset:0;z-index:40;background:#100b08;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.gd-stage{position:relative;width:min(100vw,calc(100dvh * .5625));aspect-ratio:9/16}
+.gd-stage>img{display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.gd-stage input[type=text]{position:absolute;left:24.5%;top:75.6%;width:62%;height:4.8%;margin:0;padding:0 3%;border:0;border-radius:999px;background:transparent;color:#f6e3c2;caret-color:#f2bd76;font:500 calc(min(100vw,100dvh*.5625)*.052) "Cormorant Garamond",Georgia,serif;outline:0}
+.gd-stage input[type=text]:not(:placeholder-shown){background:#1a120c}
+.gd-stage button{position:absolute;left:26%;top:83%;width:48%;height:6.2%;padding:0;border:0;border-radius:999px;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.gd-stage button:active{background:#0002}
+.gd-stage :focus-visible{outline:2px solid #f2bd76;outline-offset:3px}
 </style>
 </head>
 <body>
@@ -191,7 +201,7 @@ async function join(token, name) {
 async function viewEntry(token) {
   const saved = localStorage.getItem('guestName');
   if (saved) return join(token, saved);
-  app.innerHTML = `<section class="card center"><h1>Bem-vindo(a)!</h1><p>Como podemos chamar você?</p><label for="name-input">Seu nome</label><input id="name-input" type="text" autocomplete="name" maxlength="80"><button id="enter-btn" class="btn">Entrar no álbum</button></section>`;
+  app.innerHTML = `<section class="gd-entry"><div class="gd-stage"><img src="boas-vindas.jpg" alt="Seja bem-vindo(a)! Gabi e Diogo"><label for="name-input" class="vh">Seu nome</label><input id="name-input" type="text" autocomplete="name" maxlength="80" placeholder=" "><button id="enter-btn" type="button" aria-label="Entrar no álbum"></button></div></section>`;
   const go = () => { const n = $('#name-input').value.trim(); if (!n) return toast('Digite seu nome para continuar.'); join(token, n); };
   $('#enter-btn').onclick = go; $('#name-input').onkeydown = e => e.key === 'Enter' && go(); $('#name-input').focus();
 }
