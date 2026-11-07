@@ -140,19 +140,18 @@ body:has(.gd-entry),body:has(.gd-home){overflow:hidden;overscroll-behavior:none}
 
 /* tela do álbum (arte fixa + botões clicáveis) */
 .gd-home{position:fixed;top:0;left:0;width:var(--W,100vw);height:var(--H,100vh);z-index:40;background:#0b0705;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.gd-art{--w:min(var(--W,100vw),calc(var(--H,100vh) * 941 / 1671));position:relative;width:var(--w);aspect-ratio:941/1671;flex:none}
-.tall .gd-art{--w:calc(var(--H,100vh) * 941 / 1671);height:var(--H,100vh)}
+.gd-art{--w:min(var(--W,100vw),calc(var(--H,100vh) * 941 / 1591));position:relative;width:var(--w);aspect-ratio:941/1591;flex:none}
+.tall .gd-art{--w:calc(var(--H,100vh) * 941 / 1591);height:var(--H,100vh)}
 .gd-art>img{display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .gd-art .hit{position:absolute;display:block;margin:0;padding:0;border:0;border-radius:999px;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;font-size:0}
 .gd-art .hit:active{background:#fff1}
-.gd-art .h1{left:13.5%;top:59.55%;width:73.1%;height:5.2%}
-.gd-art .h2{left:19.66%;top:65.8%;width:60.7%;height:4.07%}
-.gd-art .h3{left:26.04%;top:85.04%;width:47.8%;height:4.55%}
-.gd-art textarea{position:absolute;left:13.4%;top:76.9%;width:73.2%;height:5.9%;margin:0;padding:.6% 2.4%;border:0;border-radius:calc(var(--w)*.012);background:transparent;color:#f6e3c2;caret-color:#f2bd76;font:500 calc(var(--w)*.04)/1.25 "Cormorant Garamond",Georgia,serif;resize:none;outline:0;box-sizing:border-box}
-.gd-art .count{position:absolute;left:0;right:0;top:90.75%;margin:0;text-align:center;white-space:nowrap;color:#f3ebdd;font:500 calc(var(--w)*.0296)/1.3 "Cormorant Garamond",Georgia,serif;font-variant-numeric:lining-nums}
+.gd-art .h1{left:13.5%;top:62.54%;width:73.1%;height:5.46%}
+.gd-art .h3{left:26.04%;top:84.29%;width:47.8%;height:4.78%}
+.gd-art textarea{position:absolute;left:13.4%;top:75.74%;width:73.2%;height:6.2%;margin:0;padding:.6% 2.4%;border:0;border-radius:calc(var(--w)*.012);background:transparent;color:#f6e3c2;caret-color:#f2bd76;font:500 calc(var(--w)*.04)/1.25 "Cormorant Garamond",Georgia,serif;resize:none;outline:0;box-sizing:border-box}
+.gd-art .count{position:absolute;left:0;right:0;top:90.28%;margin:0;text-align:center;white-space:nowrap;color:#f3ebdd;font:500 calc(var(--w)*.0296)/1.3 "Cormorant Garamond",Georgia,serif;font-variant-numeric:lining-nums}
 .gd-art .count strong{font-weight:500}
 .gd-art .count a{color:#f2cf5c;text-decoration:underline;text-underline-offset:.12em;text-decoration-thickness:.06em}
-.gd-art #queue{position:absolute;left:8%;top:30%;width:84%;max-height:26%;overflow:auto;margin:0;padding:0 3%;box-sizing:border-box;border-radius:14px;background:#120b07e6;border:1px solid #e6c27a88;color:#f6e3c2;font-size:calc(var(--w)*.032)}
+.gd-art #queue{position:absolute;left:8%;top:31.51%;width:84%;max-height:27.31%;overflow:auto;margin:0;padding:0 3%;box-sizing:border-box;border-radius:14px;background:#120b07e6;border:1px solid #e6c27a88;color:#f6e3c2;font-size:calc(var(--w)*.032)}
 .gd-art #queue:empty{display:none}
 .gd-art #queue li{color:inherit}
 .gd-art :focus-visible{outline:2px solid #f2bd76;outline-offset:3px}
@@ -287,13 +286,12 @@ async function handleFiles(files) {
 }
 async function viewHome() {
   if (!await loadEvent()) return needEntry();
-  app.innerHTML = `<section class="gd-home"><div class="gd-art"><img src="album.jpg" alt="Compartilhe com a gente os momentos que você registrou da festa! Gabi e Diogo">
+  app.innerHTML = `<section class="gd-home"><div class="gd-art"><img src="album2.jpg" alt="Compartilhe com a gente os momentos que você registrou da festa! Gabi e Diogo">
 <input id="file-input" class="vh" type="file" accept="image/*,video/*" multiple><label class="hit h1" for="file-input">Enviar foto ou vídeo</label>
-<input id="cam-input" class="vh" type="file" accept="image/*,video/*" capture="environment"><label class="hit h2" for="cam-input">Abrir a câmera agora</label>
 <ul id="queue" aria-live="polite"></ul>
 <label for="msg-input" class="vh">Sua mensagem para os noivos</label><textarea id="msg-input" maxlength="500"></textarea><button id="msg-btn" class="hit h3" type="button">Enviar mensagem</button>
 <p class="count">Você enviou <strong id="count">${+localStorage.getItem('myCount') || 0}</strong> fotos e vídeos até agora. <a href="#/mural">Ver o mural</a></p></div></section>`;
-  for (const id of ['#file-input', '#cam-input']) $(id).onchange = e => { handleFiles(e.target.files); e.target.value = ''; };
+  for (const id of ['#file-input']) $(id).onchange = e => { handleFiles(e.target.files); e.target.value = ''; };
   $('#msg-btn').onclick = async () => {
     const t = $('#msg-input').value.trim(); if (!t) return toast('Escreva sua mensagem primeiro.');
     const r = await api({ a: 'message', token: tokenNow(), guest: guestName(), text: t });
