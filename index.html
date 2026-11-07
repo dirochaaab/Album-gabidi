@@ -155,6 +155,18 @@ body:has(.gd-entry),body:has(.gd-home){overflow:hidden;overscroll-behavior:none}
 .gd-art #queue:empty{display:none}
 .gd-art #queue li{color:inherit}
 .gd-art :focus-visible{outline:2px solid #f2bd76;outline-offset:3px}
+
+/* chuva de corações ao enviar mensagem */
+.hearts i{position:fixed;top:-40px;opacity:0;animation:heartfall 3.5s ease-in forwards;z-index:70;filter:drop-shadow(0 0 4px #f2bd7699);pointer-events:none}
+@keyframes heartfall{0%{transform:translate(0,0) rotate(0);opacity:0}10%{opacity:1}85%{opacity:1}100%{transform:translate(var(--x),calc(var(--H,100vh) + 80px)) rotate(var(--r));opacity:0}}
+@media(prefers-reduced-motion:reduce){.hearts{display:none}}
+
+/* mural no mesmo visual preto e dourado */
+.adm .masonry figure{border:1.5px solid #c9a24d;border-radius:22px;background:#17120b;box-shadow:0 8px 24px #0008}
+.adm figcaption{background:#17120b;color:var(--ink);font-size:.95rem;padding:8px 14px}
+.adm .quote p{margin:0;padding:16px 16px 8px;font:italic 500 1.25rem/1.3 "Cormorant Garamond",Georgia,serif;color:#f6e3c2}
+.adm .muted{color:var(--mut)}.adm #empty{font-size:1.2rem;margin:24px 0}
+.adm .tabs{margin:6px 0 18px}
 </style>
 </head>
 <body>
@@ -262,6 +274,17 @@ async function uploadOne(f, v, onP) {
     onP(Math.min(100, Math.round((off + CH) / body.size * 100)));
   }
 }
+function hearts() {
+  const svg = c => `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 22"><path d="M12 21C4 15 1 10.5 1 7a5.5 5.5 0 0111-1.5A5.5 5.5 0 0123 7c0 3.5-3 8-11 14z" fill="${c}"/></svg>`)}")`;
+  const cols = ['#f2bd76', '#f6dc9a', '#e58a9b', '#ff9db1', '#d9b56a'], c = document.createElement('div');
+  c.className = 'hearts'; c.setAttribute('aria-hidden', 'true');
+  for (let i = 0; i < 30; i++) {
+    const h = document.createElement('i'), sz = 14 + Math.random() * 20;
+    h.style.cssText = `left:${Math.random() * 94}%;width:${sz}px;height:${sz * .92}px;background:${svg(cols[i % cols.length])} center/contain no-repeat;animation-duration:${2.8 + Math.random() * 2}s;animation-delay:${Math.random() * 1.1}s;--x:${(Math.random() - .5) * 90}px;--r:${(Math.random() - .5) * 50}deg`;
+    c.append(h);
+  }
+  document.body.append(c); setTimeout(() => c.remove(), 6500);
+}
 function confetti() {
   const c = document.createElement('div'); c.className = 'confetti'; c.setAttribute('aria-hidden', 'true');
   for (let i = 0; i < 28; i++) { const s = document.createElement('i'); s.style.cssText = `left:${Math.random() * 100}%;background:${['var(--p)', 'var(--s)', '#e8d9b5'][i % 3]};animation-delay:${Math.random() * .4}s;--x:${(Math.random() - .5) * 120}px`; c.append(s); }
@@ -296,7 +319,7 @@ async function viewHome() {
     const t = $('#msg-input').value.trim(); if (!t) return toast('Escreva sua mensagem primeiro.');
     const r = await api({ a: 'message', token: tokenNow(), guest: guestName(), text: t });
     if (r.error) return toast('Não foi possível enviar. Tente de novo.');
-    $('#msg-input').value = ''; confetti(); toast('Mensagem enviada. Obrigado!');
+    $('#msg-input').value = ''; hearts(); toast('Mensagem enviada. Obrigado!');
   };
 }
 
@@ -316,8 +339,9 @@ function lightbox(list, i) {
 }
 async function viewMural() {
   if (!await loadEvent()) return needEntry();
-  app.innerHTML = `<nav class="bar"><a href="#/home">Enviar mais</a><div class="tabs" role="tablist" aria-label="Filtrar mural">${[['all', 'Todas'], ['photo', 'Fotos'], ['video', 'Vídeos'], ['msg', 'Mensagens']].map(([k, l]) => `<button role="tab" data-f="${k}" aria-selected="${k === 'all'}">${l}</button>`).join('')}</div></nav>
-<div id="grid" class="masonry" aria-busy="true"><p class="muted">Carregando…</p></div><p id="empty" class="muted center" hidden>Ainda não há nada por aqui. Volte em breve!</p>`;
+  app.innerHTML = `${RINGS}${flowers()}<div class="topbar"><span class="mono">${esc((event.initials || 'G&D').split('&')[0])}<i></i>${esc((event.initials || 'G&D').split('&')[1] || '')}</span><span class="rule"></span><span class="tag">Nosso álbum</span></div><h1>Mural</h1><p class="script">dos nossos convidados ${HEART}</p>
+<p><a class="btn sm ghost" href="#/home">${ic('cloud', 22)}Enviar mais fotos</a></p><div class="tabs" role="tablist" aria-label="Filtrar mural">${[['all', 'Todas'], ['photo', 'Fotos'], ['video', 'Vídeos'], ['msg', 'Mensagens']].map(([k, l]) => `<button role="tab" data-f="${k}" aria-selected="${k === 'all'}">${l}</button>`).join('')}</div>
+<div id="grid" class="masonry" aria-busy="true"><p class="muted">Carregando…</p></div><p id="empty" class="muted center" hidden>Ainda não há nada por aqui. Volte em breve!</p><p class="center" style="margin:40px 0 0">${HEARTS}</p><p class="script big" style="margin-top:0">Nosso grande dia</p>`;
   const r = await api({ a: 'list', token: tokenNow() });
   if (r.error) return showError('Não foi possível carregar o mural. Tente de novo.');
   let filter = 'all'; const photos = r.media.filter(i => i.kind === 'photo');
@@ -326,7 +350,7 @@ async function viewMural() {
     $('#grid').innerHTML = med.map(i => i.kind === 'photo'
       ? `<figure><div class="ph" data-wm="${esc(event.initials)}"><img loading="lazy" src="${dThumb(i.id)}" alt="Foto de ${esc(i.guest)}" data-id="${i.id}"></div><figcaption>Enviada por ${esc(i.guest)}</figcaption></figure>`
       : `<figure><iframe src="${dVideo(i.id)}" loading="lazy" allow="autoplay" allowfullscreen title="Vídeo de ${esc(i.guest)}" style="width:100%;aspect-ratio:3/4;border:0"></iframe><figcaption>Enviado por ${esc(i.guest)}</figcaption></figure>`).join('')
-      + msgs.map(m => `<figure><p style="margin:0;padding:14px;background:#fff;font:1.15rem/1.35 'Cormorant Garamond',Georgia,serif">“${esc(m.text)}”</p><figcaption>${esc(m.guest)}</figcaption></figure>`).join('');
+      + msgs.map(m => `<figure class="quote"><p>“${esc(m.text)}”</p><figcaption>${esc(m.guest)}</figcaption></figure>`).join('');
     $('#empty').hidden = med.length + msgs.length > 0; $('#grid').setAttribute('aria-busy', 'false');
     $$('#grid img').forEach(im => im.onclick = () => lightbox(photos.map(p => ({ u: dImg(p.id), n: p.guest })), photos.findIndex(p => p.id === im.dataset.id)));
   };
@@ -381,7 +405,7 @@ async function viewAdmin() {
 /* ---------- rotas e PWA ---------- */
 async function route() {
   const h = location.hash.replace(/^#\/?/, '').split('/');
-  document.body.classList.toggle('adm', h[0] === 'admin');
+  document.body.classList.toggle('adm', h[0] === 'admin' || h[0] === 'mural');
   
   try {
     if (h[0] === 'e' && h[1]) await viewEntry(decodeURIComponent(h[1]));
